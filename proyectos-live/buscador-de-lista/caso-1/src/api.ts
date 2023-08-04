@@ -1,4 +1,4 @@
-import {Product} from "./types";
+import { Product } from "./types";
 
 const PRODUCTS: Product[] = [
   {
@@ -31,20 +31,34 @@ const PRODUCTS: Product[] = [
     description: "Ventilador portable de escritorio, marca liliancy",
     price: 50,
   },
+  {
+    id: 6,
+    title: "TV 60 pulgadas",
+    description: "TV 60 pulgadas, marca cachin",
+    price: 800,
+  },
 ];
 
 const api = {
-  search: (query?: string): Promise<Product[]> => {
+  getProducts: (query?: string, sortBy?: string): Promise<Product[]> => {
     let results = PRODUCTS;
 
-    if (query) {
+    if (query || sortBy) {
+
+      if (sortBy === "price") {
+        results.sort((a, b) => a.price - b.price);
+
+      } else if (sortBy === "name") {
+        results.sort((a, b) => a.title.localeCompare(b.title));
+      }
       results = results.filter((product) => {
-        return product.title.includes(query);
+        return product.title.toLowerCase().includes((query || "").toLowerCase());
       });
     }
-
     return new Promise((resolve) => setTimeout(() => resolve(results), 1000));
   },
 };
+
+
 
 export default api;

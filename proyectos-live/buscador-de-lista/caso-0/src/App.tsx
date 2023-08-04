@@ -1,6 +1,6 @@
-import type {Product} from "./types";
+import type { Product } from "./types";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 import api from "./api";
 
@@ -9,21 +9,23 @@ function App() {
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
-    api.search(query);
+    api.search(query).then(setProducts);
   }, [query]);
 
   return (
     <main>
       <h1>Tienda digitaloncy</h1>
-      <input name="text" placeholder="tv" type="text" onChange={(e) => setQuery(e.target)} />
+      <input name="text" placeholder="Busque su producto aqui..." type="text" onChange={(e) => setQuery(e.target.value)} />
       <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            <h4>{product.title}</h4>
-            <p>{product.description}</p>
-            <span>$ {product.price}</span>
-          </li>
-        ))}
+        {products.length > 0
+          ? products.map((product) => (
+            <li className={product.price <= 100 ? 'sale' : ''} key={product.id}>
+              <h4>{product.title}</h4>
+              <p>{product.description}</p>
+              <span>$ {product.price}</span>
+            </li>
+          ))
+          : <h1>Cargando...</h1>}
       </ul>
     </main>
   );

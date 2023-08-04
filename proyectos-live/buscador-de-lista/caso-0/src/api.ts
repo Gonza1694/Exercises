@@ -1,4 +1,4 @@
-import {Product} from "./types";
+import { Product } from "./types";
 
 const PRODUCTS: Product[] = [
   {
@@ -34,6 +34,11 @@ const PRODUCTS: Product[] = [
 ];
 
 const api = {
+  getAllProducts: (): Promise<Product[]> => {
+    let results = PRODUCTS;
+    return new Promise((resolve) => setTimeout(() => ()=>{resolve(results)}, 1000));
+  },
+
   search: (query?: string): Promise<Product[]> => {
     let results = PRODUCTS;
 
